@@ -16,9 +16,9 @@ export function signupWithEmailPassword(email: string, password: string) {
       // ...
     })
     .catch((error) => {
-      const errorCode = error.code;
+      // const errorCode = error.code;
       const errorMessage = error.message;
-      console.error(errorMessage, errorCode);
+      console.log(errorMessage);
       // ..
     });
 }
@@ -32,8 +32,8 @@ export function loginWithEmailPassword(email: string, password: string) {
       // ...
     })
     .catch((error) => {
-      const errorCode = error.code;
+      // const errorCode = error.code;
       const errorMessage = error.message;
-      console.error(errorMessage, errorCode);
+      console.log(errorMessage);
     });
 }
