@@ -31,9 +31,9 @@ const AuthContext = ({ children }: { children: ReactNode }) => {
     const auth = getAuth(app);
     onAuthStateChanged(auth, (loggedInUser) => {
       if (loggedInUser) {
-        const { email, uid } = loggedInUser;
+        const { email, uid, emailVerified } = loggedInUser;
         setUser({ email, uid });
-        router.push("/");
+        emailVerified ? router.push("/") : router.push("./verify-email");
       } else {
         console.log("inside onauthstatechange else statement");
         setUser(null);

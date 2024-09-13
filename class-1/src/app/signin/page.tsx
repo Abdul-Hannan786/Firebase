@@ -7,6 +7,7 @@ import { useState } from "react";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   return (
     <>
       <input
@@ -29,7 +30,13 @@ const SignIn = () => {
       />
       <br />
       <br />
-      <button onClick={() => {loginWithEmailPassword(email, password)}}>Sign In</button>
+      <button
+        onClick={() => {
+          loginWithEmailPassword(email, password);
+        }}
+      >
+        Sign In
+      </button>
       <p>
         Dont have have an account?{" "}
         <span>

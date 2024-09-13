@@ -37,3 +37,12 @@ export function loginWithEmailPassword(email: string, password: string) {
       console.log(errorMessage);
     });
 }
+
+// export function emailVerification(){
+//   sendEmailVerification(auth.currentUser!)
+//   .then(() => {
+//     // Email verification sent!
+//     // ...
+//   });
+
+// }
