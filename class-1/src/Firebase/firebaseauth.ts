@@ -3,6 +3,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
 } from "firebase/auth";
 
 const auth = getAuth(app);
@@ -13,6 +15,10 @@ export function signupWithEmailPassword(email: string, password: string) {
       // Signed up
       const user = userCredential.user;
       console.log(user, "user created successfully.");
+      sendEmailVerification(auth.currentUser!).then(() => {
+        // Email verification sent!
+        // ...
+      });
       // ...
     })
     .catch((error) => {
@@ -38,11 +44,21 @@ export function loginWithEmailPassword(email: string, password: string) {
     });
 }
 
-// export function emailVerification(){
-//   sendEmailVerification(auth.currentUser!)
-//   .then(() => {
-//     // Email verification sent!
-//     // ...
-//   });
+export function emailVerification(){
+  sendEmailVerification(auth.currentUser!)
+  .then(() => {
+    // Email verification sent!
+    // ...
+  });
 
-// }
+}
+
+export function signOutAtHome() {
+  signOut(auth)
+    .then(() => {
+      console.log("Signout successfully")
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+}

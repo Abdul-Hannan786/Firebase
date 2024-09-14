@@ -1,17 +1,18 @@
 "use client";
 
-import { app } from "@/Firebase/firebaseconfig";
-import { getAuth, sendEmailVerification } from "firebase/auth";
+import { emailVerification } from "@/Firebase/firebaseauth";
+// import { app } from "@/Firebase/firebaseconfig";
+// import { getAuth, sendEmailVerification } from "firebase/auth";
 import React from "react";
 
-const auth = getAuth(app)
-const emailVerification = () => {
-  sendEmailVerification(auth.currentUser!)
-  .then(() => {
-    // Email verification sent!
-    // ...
-  });
-}
+// const auth = getAuth(app)
+// const emailVerification = () => {
+//   sendEmailVerification(auth.currentUser!)
+//   .then(() => {
+//     // Email verification sent!
+//     // ...
+//   });
+// }
 const VerifyEmail = () => {
   return (
     <div
@@ -22,11 +23,12 @@ const VerifyEmail = () => {
         alignItems: "center",
         fontFamily: "sans-serif",
         height: "96vh",
+        width: "96vw"
       }}
     >
       <h1>Please Verify Your Email Address</h1>
       <button
-        onClick={() => {emailVerification()}}
+        onClick={() => {emailVerification}}
         style={{
           color: "white",
           padding: "9px",
