@@ -6,20 +6,26 @@ import {
   sendEmailVerification,
   signOut,
 } from "firebase/auth";
+import { saveUser } from "./firebasefirestore";
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
-export function signupWithEmailPassword(email: string, password: string) {
+export function signupWithEmailPassword(
+  email: string,
+  password: string,
+  rollNumber: string,
+  studentName: string
+) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed up
-      const user = userCredential.user;
-      console.log(user, "user created successfully.");
+      const { email, uid } = userCredential.user;
+      console.log("user created successfully.");
+      saveUser({ email: email as string, uid, rollNumber, studentName });
       sendEmailVerification(auth.currentUser!).then(() => {
         // Email verification sent!
         // ...
       });
-      // ...
     })
     .catch((error) => {
       // const errorCode = error.code;
@@ -44,21 +50,19 @@ export function loginWithEmailPassword(email: string, password: string) {
     });
 }
 
-export function emailVerification(){
-  sendEmailVerification(auth.currentUser!)
-  .then(() => {
+export function emailVerification() {
+  sendEmailVerification(auth.currentUser!).then(() => {
     // Email verification sent!
     // ...
   });
-
 }
 
 export function signOutAtHome() {
   signOut(auth)
     .then(() => {
-      console.log("Signout successfully")
+      console.log("Signout successfully");
     })
     .catch((error) => {
-      console.log(error)
+      console.log(error);
     });
 }

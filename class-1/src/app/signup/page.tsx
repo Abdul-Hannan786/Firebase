@@ -7,6 +7,8 @@ import { useState } from "react";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rollNumber, setRollNumber] = useState("");
+  const [stName, setStName] = useState("");
 
   return (
     <>
@@ -30,7 +32,33 @@ const SignUp = () => {
       />
       <br />
       <br />
-      <button onClick={() => {signupWithEmailPassword(email, password)}}>Sign Up</button>
+      <input
+        type="text"
+        placeholder="Enter Your Roll Number"
+        value={rollNumber}
+        onChange={(e) => {
+          setRollNumber(e.target.value);
+        }}
+      />
+      <br />
+      <br />
+      <input
+        type="text"
+        placeholder="Enter Your Name"
+        value={stName}
+        onChange={(e) => {
+          setStName(e.target.value);
+        }}
+      />
+      <br />
+      <br />
+      <button
+        onClick={() => {
+          signupWithEmailPassword(email, password, rollNumber, stName);
+        }}
+      >
+        Sign Up
+      </button>
       <p>
         Already have an account?{" "}
         <span>
