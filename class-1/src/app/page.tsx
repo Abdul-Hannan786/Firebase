@@ -33,7 +33,10 @@ export default function Home() {
       <br />
 
       <button
-        onClick={() => {saveTodo(todo)}}
+        onClick={() => {
+          saveTodo(todo);
+          setTodo("")
+        }}
         style={{
           color: "white",
           padding: "9px",
