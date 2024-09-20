@@ -20,10 +20,10 @@ export async function saveUser(user: UserType) {
   }
 }
 
-export async function saveTodo(todo: string) {
+export async function saveTodo(todo: string, isComplete: boolean) {
 
     const uid = auth.currentUser?.uid
-    const newTodo = {todo, uid}
+    const newTodo = {todo, uid, isComplete}
 
     try{
         const collectionRef = collection(db, "todos")

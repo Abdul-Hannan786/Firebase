@@ -10,12 +10,19 @@ export default function Home() {
   const router = useRouter();
   const { user } = UseAuthContext();
   const [todo, setTodo] = useState("");
+  const [isComplete, setIsComplete] = useState(false);
+
+  const addTodo = () => {
+    saveTodo(todo, isComplete);
+    setTodo("");
+    setIsComplete(false) 
+  };
 
   useEffect(() => {
     if (!user) {
       router.push("./signin");
     }
-  }, [router, user]);
+  }, [router, user, isComplete]);
   return (
     <>
       <h1>Home Page</h1>
@@ -32,10 +39,18 @@ export default function Home() {
       <br />
       <br />
 
+      <label htmlFor="iscomplete">Is Complete</label>
+      <input
+        type="checkbox"
+        id="iscomplete"
+        onChange={(e) => setIsComplete(e.target.checked)} 
+      />
+
+      <br />
+      <br />
       <button
         onClick={() => {
-          saveTodo(todo);
-          setTodo("")
+          addTodo();
         }}
         style={{
           color: "white",
