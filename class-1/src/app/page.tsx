@@ -2,7 +2,7 @@
 
 import { UseAuthContext } from "@/Context/AuthContext";
 import { signOutAtHome } from "@/Firebase/firebaseauth";
-import { saveTodo } from "@/Firebase/firebasefirestore";
+import { fetchTodos, saveTodo } from "@/Firebase/firebasefirestore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -22,6 +22,8 @@ export default function Home() {
     if (!user) {
       router.push("./signin");
     }
+
+    fetchTodos()
   }, [router, user, isComplete]);
   return (
     <>
@@ -44,6 +46,7 @@ export default function Home() {
         type="checkbox"
         id="iscomplete"
         onChange={(e) => setIsComplete(e.target.checked)} 
+        checked={isComplete}
       />
 
       <br />
