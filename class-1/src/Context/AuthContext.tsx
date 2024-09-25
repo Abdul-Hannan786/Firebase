@@ -26,7 +26,7 @@ const AuthContextProvider = createContext<AuthContextType>({
 const AuthContext = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const router = useRouter();
-
+ 
   useEffect(() => {
     const auth = getAuth(app);
     onAuthStateChanged(auth, (loggedInUser) => {

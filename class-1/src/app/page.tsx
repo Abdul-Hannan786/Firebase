@@ -1,32 +1,96 @@
 "use client";
 
-import { UseAuthContext } from "@/Context/AuthContext";
-import { signOutAtHome } from "@/Firebase/firebaseauth";
-import { fetchTodos, saveTodo } from "@/Firebase/firebasefirestore";
+import { auth, signOutAtHome } from "@/Firebase/firebaseauth";
+import { db, saveTodo } from "@/Firebase/firebasefirestore";
+import { onAuthStateChanged } from "firebase/auth";
+import {
+  collection,
+  DocumentData,
+  onSnapshot,
+  query,
+  Unsubscribe,
+  where,
+} from "firebase/firestore";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const { user } = UseAuthContext();
   const [todo, setTodo] = useState("");
+  const [allTodos, setAllTodos] = useState<DocumentData[]>([]);
   const [isComplete, setIsComplete] = useState(false);
 
   const addTodo = () => {
     saveTodo(todo, isComplete);
     setTodo("");
-    setIsComplete(false) 
+    setIsComplete(false);
   };
 
-  useEffect(() => {
-    if (!user) {
-      router.push("./signin");
-    }
+  // const fetchAllTodos = async () => {
+  //   const fetchedData = await fetchTodos();
+  //   console.log(fetchedData, "inside Home");
+  //   setAllTodos(fetchedData);
+  // };
 
-    fetchTodos()
-  }, [router, user, isComplete]);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       fetchAllTodos();
+  //       console.log(allTodos);
+  //     } else {
+  //       router.push("./signin");
+  //     }
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    const detachOnAuthListner = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchTodosRealTime();
+      } else {
+        router.push("./signin");
+      }
+    });
+
+    return () => {
+      if (readTodoRealTime) {
+        console.log("Component Unmount");
+        readTodoRealTime();
+        detachOnAuthListner();
+      }
+    };
+  }, []);
+
+  let readTodoRealTime: Unsubscribe;
+
+  const fetchTodosRealTime = () => {
+    const collectionRef = collection(db, "todos");
+    const currentUserUID = auth.currentUser?.uid;
+    const condition = where("uid", "==", currentUserUID);
+    const q = query(collectionRef, condition);
+    const allTodosClone = [...allTodos];
+
+    readTodoRealTime = onSnapshot(q, (querySnapShot) => {
+      querySnapShot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          const todo = change.doc.data();
+          todo.id = change.doc.id;
+          allTodosClone.push(todo);
+          setAllTodos([...allTodosClone]);
+        }
+        if (change.type === "modified") {
+          console.log("Data Modified")
+        }
+        if (change.type === "removed") {
+        }
+      });
+    });
+  };
+
   return (
     <>
+      <Link href={"./about"}>About</Link>
       <h1>Home Page</h1>
 
       <input
@@ -45,7 +109,7 @@ export default function Home() {
       <input
         type="checkbox"
         id="iscomplete"
-        onChange={(e) => setIsComplete(e.target.checked)} 
+        onChange={(e) => setIsComplete(e.target.checked)}
         checked={isComplete}
       />
 
@@ -85,6 +149,12 @@ export default function Home() {
       >
         Sign Out
       </button>
+
+      {allTodos.length > 0 ? (
+        allTodos.map(({ todo }, index) => <h1 key={todo + index}>{todo}</h1>)
+      ) : (
+        <></>
+      )}
     </>
   );
 }

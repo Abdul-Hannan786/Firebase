@@ -18,7 +18,7 @@ type UserType = {
   uid: string;
 };
 
-const db = getFirestore(app);
+export const db = getFirestore(app);
 
 export async function saveUser(user: UserType) {
   try {
@@ -57,10 +57,10 @@ export async function fetchTodos() {
 
   const allTodosSnapShot = await getDocs(q);
 
-  allTodosSnapShot.forEach((todo) => {
-    const todoData = todo.data();
-    todoData.id = todo.id;
-
-    console.log(todoData);
+  const allTodos = allTodosSnapShot.docs.map((todoSnapShot) => {
+    const todo = todoSnapShot.data();
+    todo.id = todoSnapShot.id;
+    return todo;
   });
+  return allTodos;
 }
