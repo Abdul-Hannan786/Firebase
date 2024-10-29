@@ -1,14 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
+  const route = useRouter()
   return (
     <>
       <div className="w-full flex items-center justify-center flex-col p-10 gap-5">
         <h1 className="text-3xl mb-3 font-bold">Hello World</h1>
         <div className="flex flex-col gap-5 w-64">
-          <button className="btn btn-secondary">Secondary</button>
+          <button className="btn btn-secondary" onClick={() => {route.push("/login")}}>Login</button>
           <button className="btn btn-error">Error</button>
           <button className="btn btn-outline btn-info">Info</button>
           <button
@@ -32,11 +35,6 @@ export default function Home() {
               </p>
             </div>
           </dialog>
-          <input
-            type="checkbox"
-            value="forest"
-            className="checkbox theme-controller"
-          />
         </div>
         <div className="collapse collapse-plus bg-base-200">
           <input type="radio" name="my-accordion-3" defaultChecked />
@@ -331,6 +329,7 @@ export default function Home() {
           </div>
         </nav>
       </footer>
+       
     </>
   );
 }

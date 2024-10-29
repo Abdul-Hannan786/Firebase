@@ -26,7 +26,7 @@ export default function Home() {
     setTodo("");
     setIsComplete(false);
   };
-
+ 
   // const fetchAllTodos = async () => {
   //   const fetchedData = await fetchTodos();
   //   console.log(fetchedData, "inside Home");
