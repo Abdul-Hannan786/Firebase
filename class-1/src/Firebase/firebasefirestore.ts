@@ -28,7 +28,7 @@ export async function saveUser(user: UserType) {
     console.log(error);
   }
 }
-
+ 
 export async function saveTodo(todo: string, isComplete: boolean) {
   const uid = auth.currentUser?.uid
   const newTodo = { todo, uid, isComplete };
